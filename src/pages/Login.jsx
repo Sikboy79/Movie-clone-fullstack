@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./Login.css";
-import logo from "../../../public/assets/assets/logo.png";
-import { login, signup } from "../../firebase";
-import netflix_spinner from '../../../public/assets/assets/netflix_spinner.gif'
+import logo from "../assets/logo.png";
+import { login, signup } from "../firebase";
+import netflix_spinner from '../assets/netflix_spinner.gif'
 
 function Login() {
   const [signState, setSignState] = useState("Sign In");

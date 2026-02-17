@@ -3,5 +3,5 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/Movie-clone-fullstack/', // 👈 must match your repo name
+  base: '/Movie-clone-fullstack/', 
 })

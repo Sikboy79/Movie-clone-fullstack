@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
 import "./Home.css";
 import Navbar from "../../components/Navbar/Navbar";
-import hero_banner from "../../assets/assets/hero_banner.jpg";
-import hero_title from "../../assets/assets/hero_title.png";
+import hero_banner from "../../../public/assets/assets/hero_banner.jpg";
+import hero_title from "../../../public/assets/assets/hero_title.png";
 import TitleCards from "../../components/TitleCards/TitleCards";
 import Footer from "../../components/Footer/Footer";
 

@@ -1,13 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./TitleCards.css";
-import cards_data from "../../assets/assets/cards/Cards_data";
 import { Link } from "react-router-dom";
 
 const TitleCards = ({ title, category }) => {
-
   const [apiData, setApiData] = useState([]);
-
-  const cardsRef = useRef();
+  const cardsRef = useRef(null);
 
   const options = {
     method: "GET",
@@ -18,34 +15,54 @@ const TitleCards = ({ title, category }) => {
     },
   };
 
+  // Handle horizontal scroll on wheel
   const handleWheel = (event) => {
     event.preventDefault();
-    cardsRef.current.scrollLeft += event.deltaY;
+    if (cardsRef.current) {
+      cardsRef.current.scrollLeft += event.deltaY;
+    }
   };
 
   useEffect(() => {
+    // Fetch API data
     fetch(
-      `https://api.themoviedb.org/3/movie/${category?category:"now_playing"}?language=en-US&page=1`,
+      `https://api.themoviedb.org/3/movie/${category ? category : "now_playing"}?language=en-US&page=1`,
       options
     )
       .then((res) => res.json())
       .then((res) => setApiData(res.results))
       .catch((err) => console.error(err));
+  }, [category]);
 
-    cardsRef.current.addEventListener("wheel", handleWheel);
+  useEffect(() => {
+    const currentRef = cardsRef.current;
+    if (!currentRef) return;
+
+    currentRef.addEventListener("wheel", handleWheel);
+
+    // Cleanup on unmount
+    return () => {
+      currentRef.removeEventListener("wheel", handleWheel);
+    };
   }, []);
+
   return (
     <div className="title-cards">
-      <h2> {title ? title : "Popular on Netflix"}</h2>
+      <h2>{title ? title : "Popular on Netflix"}</h2>
       <div className="card-list" ref={cardsRef}>
-        {apiData.map((card, index) => {
-          return (
-            <Link to={`/player/${card.id}`}className="card" key={index}>
-              <img src={`https://image.tmdb.org/t/p/w500`+card.backdrop_path} alt="" />
-              <p>{card.original_title}</p>
-            </Link>
-          );
-        })}
+        {apiData.map((card, index) => (
+          <Link
+            to={`/player/${card.id}`}
+            className="card"
+            key={index}
+          >
+            <img
+              src={`https://image.tmdb.org/t/p/w500${card.backdrop_path}`}
+              alt={card.original_title}
+            />
+            <p>{card.original_title}</p>
+          </Link>
+        ))}
       </div>
     </div>
   );
